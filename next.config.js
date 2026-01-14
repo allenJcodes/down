@@ -4,4 +4,4 @@ const nextConfig = {
     // No webpack customization needed
 };
 
-export default nextConfig;
+module.exports = nextConfig;
