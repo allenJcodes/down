@@ -22,7 +22,8 @@ export class FlyingEnemy {
         this.sprite.setTint(0xff6666)
 
         // Physics properties - flying enemies ignore gravity
-        this.sprite.body!.setAllowGravity(false)
+        const body = this.sprite.body as Phaser.Physics.Arcade.Body
+        body.setAllowGravity(false)
         this.sprite.setCollideWorldBounds(true)
         this.sprite.setBounce(0)
         this.sprite.setVelocityX(this.speed * this.direction)

@@ -33,29 +33,45 @@ export class TestLevelScene extends Phaser.Scene {
         for (let i = 0; i < 5; i++) {
             const x = 200 + (i % 2) * 400
             const y = 150 + i * 100
-            const platform = platforms.create(x, y, null) as Phaser.Physics.Arcade.Sprite
+            const platform = platforms.create(x, y, undefined) as Phaser.Physics.Arcade.Sprite
             platform.setDisplaySize(200, 20)
             platform.setTint(0x2a2a2a)
             platform.refreshBody()
         }
 
-        // Bottom platform (goal)
-        const goalPlatform = platforms.create(width / 2, height - 50, null) as Phaser.Physics.Arcade.Sprite
-        goalPlatform.setDisplaySize(300, 20)
-        goalPlatform.setTint(0x44ff44)
-        goalPlatform.refreshBody()
+        // Ground platform at the bottom (full width)
+        const ground = platforms.create(width / 2, height - 10, undefined) as Phaser.Physics.Arcade.Sprite
+        ground.setDisplaySize(width, 20)
+        ground.setTint(0x2a2a2a)
+        ground.refreshBody()
 
         // Create player
         this.player = new Player(this, 100, 100)
         this.physics.add.collider(this.player.sprite, platforms)
 
-        // Goal zone
-        const goalZone = this.add.zone(width / 2, height - 100, 300, 100)
-        this.physics.world.enable(goalZone)
+        // Exit zone on the lower right (same as tutorial rooms)
+        const exitZone = this.add.zone(width - 80, height - 60, 120, 120)
+        this.physics.world.enable(exitZone)
+        const exitBody = exitZone.body as Phaser.Physics.Arcade.Body
+        exitBody.setAllowGravity(false)
 
-        this.physics.add.overlap(this.player.sprite, goalZone, () => {
-            this.completeLevel()
-        })
+        // Visual indicator for exit (green glowing area)
+        this.add.rectangle(width - 80, height - 60, 120, 120, 0x44ff44, 0.3)
+        this.add.text(width - 80, height - 60, 'EXIT', {
+            fontSize: '20px',
+            color: '#44ff44',
+            fontStyle: 'bold',
+        }).setOrigin(0.5)
+
+        this.physics.add.overlap(
+            this.player.sprite,
+            exitZone,
+            () => {
+                this.completeLevel()
+            },
+            undefined,
+            this
+        )
     }
 
     update() {
