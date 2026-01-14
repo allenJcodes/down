@@ -16,6 +16,7 @@ export class Player {
     private readonly WALK_SPEED = 200
     private readonly JUMP_VELOCITY = -400
     private readonly DROP_MULTIPLIER = 2.5
+    private readonly MAX_FALL_VELOCITY = 800 // Cap to prevent clipping through platforms
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         this.scene = scene
@@ -62,8 +63,18 @@ export class Player {
 
         // Fast fall / drop
         if (this.keys.s.isDown || this.cursors.down.isDown) {
-            if (body.velocity.y > 0) {
-                this.sprite.setVelocityY(body.velocity.y * this.DROP_MULTIPLIER)
+            // Cancel upward momentum if jumping
+            if (body.velocity.y < 0) {
+                this.sprite.setVelocityY(0)
+            }
+            // Apply fast fall when falling
+            else if (body.velocity.y > 0) {
+                // Apply multiplier but cap at max velocity to prevent clipping
+                const newVelocity = Math.min(
+                    body.velocity.y * this.DROP_MULTIPLIER,
+                    this.MAX_FALL_VELOCITY
+                )
+                this.sprite.setVelocityY(newVelocity)
             }
         }
     }

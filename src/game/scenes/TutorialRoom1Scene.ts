@@ -38,12 +38,20 @@ export class TutorialRoom1Scene extends Phaser.Scene {
             color: '#44ff44',
         }).setOrigin(0.5)
 
-        // Create platform
+        // Create platforms
         this.platforms = this.physics.add.staticGroup()
-        const platform = this.platforms.create(width / 2, height / 2 + 100, null) as Phaser.Physics.Arcade.Sprite
+
+        // Main platform in the middle
+        const platform = this.platforms.create(width / 2, height / 2 + 100, undefined) as Phaser.Physics.Arcade.Sprite
         platform.setDisplaySize(400, 20)
         platform.setTint(0x2a2a2a)
         platform.refreshBody()
+
+        // Ground platform at the bottom (safety net)
+        const ground = this.platforms.create(width / 2, height - 10, undefined) as Phaser.Physics.Arcade.Sprite
+        ground.setDisplaySize(width, 20)
+        ground.setTint(0x2a2a2a)
+        ground.refreshBody()
 
         // Create player
         this.player = new Player(this, 200, height / 2)
@@ -51,13 +59,31 @@ export class TutorialRoom1Scene extends Phaser.Scene {
         // Collision
         this.physics.add.collider(this.player.sprite, this.platforms)
 
-        // Exit trigger
-        const exitZone = this.add.zone(width - 50, height / 2, 100, 400)
+        // Exit trigger on the right side of the ground platform
+        const exitZone = this.add.zone(width - 80, height - 60, 120, 120)
         this.physics.world.enable(exitZone)
+        const exitBody = exitZone.body as Phaser.Physics.Arcade.Body
+        exitBody.setAllowGravity(false)
 
-        this.physics.add.overlap(this.player.sprite, exitZone, () => {
-            this.scene.start('TutorialRoom2Scene')
-        })
+        // Visual indicator for exit (green glowing area)
+        const exitIndicator = this.add.rectangle(width - 80, height - 60, 120, 120, 0x44ff44, 0.3)
+        this.add.text(width - 80, height - 60, 'EXIT', {
+            fontSize: '20px',
+            color: '#44ff44',
+            fontStyle: 'bold',
+        }).setOrigin(0.5)
+
+        // Setup overlap detection
+        this.physics.add.overlap(
+            this.player.sprite,
+            exitZone,
+            () => {
+                console.log('Exit triggered!')
+                this.scene.start('TutorialRoom2Scene')
+            },
+            undefined,
+            this
+        )
     }
 
     update() {

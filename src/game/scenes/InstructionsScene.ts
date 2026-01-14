@@ -87,49 +87,9 @@ export class InstructionsScene extends Phaser.Scene {
             }
             this.inputElement = null
 
-            // Show menu
-            this.showMenu()
-        }
-    }
-
-    private showMenu() {
-        const { width, height } = this.cameras.main
-
-        // Clear previous content
-        this.children.removeAll()
-
-        // Title
-        this.add.text(width / 2, height / 2 - 150, 'DOWN', {
-            fontSize: '64px',
-            color: '#ffffff',
-            fontStyle: 'bold',
-        }).setOrigin(0.5)
-
-        // Menu buttons
-        this.createButton(width / 2, height / 2 - 20, 'Play', () => {
+            // Start tutorial directly
             this.scene.start('TutorialRoom1Scene')
-        })
-
-        this.createButton(width / 2, height / 2 + 40, 'Leaderboards', () => {
-            console.log('Leaderboards - Coming soon')
-        })
-
-        this.createButton(width / 2, height / 2 + 100, 'Options', () => {
-            console.log('Options - Coming soon')
-        })
-    }
-
-    private createButton(x: number, y: number, text: string, callback: () => void) {
-        const button = this.add.text(x, y, text, {
-            fontSize: '28px',
-            color: '#00ffff',
-        }).setOrigin(0.5)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => button.setColor('#ffffff'))
-            .on('pointerout', () => button.setColor('#00ffff'))
-            .on('pointerdown', callback)
-
-        return button
+        }
     }
 
     shutdown() {
