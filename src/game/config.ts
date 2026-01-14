@@ -20,8 +20,8 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
         },
     },
     scene: [
-        InstructionsScene,
         MainMenuScene,
+        InstructionsScene,
         TutorialRoom1Scene,
         TutorialRoom2Scene,
         TutorialRoom3Scene,

@@ -2,12 +2,14 @@ import Phaser from 'phaser'
 import { Player } from '../entities/Player'
 import { GroundEnemy } from '../entities/GroundEnemy'
 import { FlyingEnemy } from '../entities/FlyingEnemy'
+import { HealthSystem } from '../utils/HealthSystem'
 
 export class TutorialRoom3Scene extends Phaser.Scene {
     private player!: Player
     private platforms!: Phaser.Physics.Arcade.StaticGroup
     private groundEnemies: GroundEnemy[] = []
     private flyingEnemies: FlyingEnemy[] = []
+    private healthSystem!: HealthSystem
 
     constructor() {
         super({ key: 'TutorialRoom3Scene' })
@@ -15,6 +17,9 @@ export class TutorialRoom3Scene extends Phaser.Scene {
 
     create() {
         const { width, height } = this.cameras.main
+
+        // Initialize health system
+        this.healthSystem = new HealthSystem(this)
 
         // Tutorial text
         this.add.text(width / 2, 30, 'Enemy Tutorial', {
@@ -125,13 +130,29 @@ export class TutorialRoom3Scene extends Phaser.Scene {
     }
 
     private handleEnemyDamage() {
-        // For now, just log damage (health system to be implemented)
-        console.log('Player hit enemy! Damage taken.')
+        // Use health system to handle damage
+        const damageTaken = this.healthSystem.takeDamage()
 
-        // Visual feedback - flash the player
-        this.player.sprite.setTint(0xff0000)
-        this.time.delayedCall(200, () => {
-            this.player.sprite.setTint(0x4a9eff)
+        if (damageTaken) {
+            console.log(`Player hit enemy! Health: ${this.healthSystem.getCurrentHealth()}/${this.healthSystem.getMaxHealth()}`)
+
+            // Visual feedback - flash the player
+            this.player.sprite.setTint(0xff0000)
+            this.time.delayedCall(200, () => {
+                this.player.sprite.setTint(0x4a9eff)
+            })
+
+            // Check if player died
+            if (this.healthSystem.isDead()) {
+                this.handleDeath()
+            }
+        }
+    }
+
+    private handleDeath() {
+        console.log('Player died! Restarting scene...')
+        this.time.delayedCall(1000, () => {
+            this.scene.restart()
         })
     }
 
