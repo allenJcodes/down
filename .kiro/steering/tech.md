@@ -64,3 +64,8 @@ pnpm install          # Install dependencies
 - Strict mode enabled
 - Module resolution: bundler
 - JSX: preserve (handled by Next.js)
+
+## Module System
+- **Use ES Modules only**: Always use `import`/`export` syntax
+- **No CommonJS**: Avoid `require()` and `module.exports`
+- **Reason**: Next.js 16 with Turbopack requires ES modules for optimal performance

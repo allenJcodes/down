@@ -1,12 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    webpack: (config) => {
-        // Phaser requires these for proper bundling
-        config.resolve.alias = {
-            ...config.resolve.alias,
-        };
-        return config;
-    },
+    // Phaser works fine with Turbopack in Next.js 16
+    // No webpack customization needed
 };
 
-module.exports = nextConfig;
+export default nextConfig;
