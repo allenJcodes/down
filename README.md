@@ -156,3 +156,87 @@ A 2D platformer browser game built with Phaser and Next.js, featuring a simple l
    ```bash
    pnpm dev
    ```
+
+
+---
+
+## 🎮 Game Controls
+
+| Action | Keys |
+|--------|------|
+| Jump | `W` or `↑` or `Space` |
+| Move Left | `A` or `←` |
+| Move Right | `D` or `→` |
+| Drop/Fast Fall | `S` or `↓` |
+
+---
+
+## 📂 Current Project Status
+
+### Implemented
+- ✅ Next.js 16 + TypeScript + Tailwind CSS
+- ✅ Phaser 3.90 game engine integration
+- ✅ Scene flow: Instructions → Menu → Tutorial Rooms → Test Level
+- ✅ Player entity with full movement controls
+- ✅ Basic platform physics
+- ✅ PostgreSQL + Prisma ORM setup
+- ✅ Leaderboard API (GET/POST endpoints)
+- ✅ Input validation with Zod
+
+### To Be Implemented
+- ⏳ Obstacle entities (Red Spikes, Blue Surfaces, Time Crystals)
+- ⏳ Enemy entities (Ground, Flying)
+- ⏳ Health & damage system
+- ⏳ Timer system with pause
+- ⏳ Score calculation
+- ⏳ Leaderboard UI page
+- ⏳ Options/Settings menu
+- ⏳ Game assets (sprites, audio)
+
+---
+
+## 🚀 Getting Started
+
+See [SETUP.md](./SETUP.md) for detailed installation and setup instructions.
+
+**Quick start:**
+```bash
+# Install dependencies
+pnpm install
+
+# Setup database
+cp .env.example .env.local
+# Edit .env.local with your DATABASE_URL
+
+# Initialize database
+npx prisma generate
+npx prisma db push
+
+# Run development server
+pnpm dev
+```
+
+---
+
+## 📖 Documentation
+
+- **[SETUP.md](./SETUP.md)** - Installation and setup guide
+- **[Game Flow Specification](.kiro/steering/game-flow-and-mechanics.md)** - Complete game mechanics and design document
+
+---
+
+## 🏗️ Architecture
+
+- **Frontend**: Next.js 16 (App Router) + React 18
+- **Game Engine**: Phaser 3.90
+- **Backend**: Next.js API Routes
+- **Database**: PostgreSQL 18 + Prisma ORM 7.2
+- **Validation**: Zod 3.x
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript 5.7+
+
+---
+
+## 📝 License
+
+MIT
